@@ -21,10 +21,71 @@ void SwapNums(int &x, int &y){
 }
 
 class MyClass{
-    public :
+    private : //Everything here is private
+        int privateNum;
+
+    public : //Everything here is public
         int myNum;
         string myString;
+
+        //Constructor
+        MyClass(int myNum, string myString, int privateNum){
+            cout << "Im Alive!" << endl;
+            this->myNum = myNum;
+            this->myString = myString;
+            this->privateNum = privateNum;
+        }
+
+        void InPrint(){
+            cout << myNum << " " << myString << privateNum << endl;
+        }
+        //Declaration
+        //void MyClass::OutPrint();
 };
+
+//Definition
+// :: = scope resolution operator
+/*void MyClass::OutPrint(){
+    cout << myNum << " " << myString << privateNum << endl;
+}*/
+
+
+//Inheritance
+class Vehicle {
+    public :
+        string brand = "Ford";
+        void Honk(){
+            cout << "Honk Honk" << endl;
+        }
+};
+
+class Car : public Vehicle{
+    public:
+        string model = "Mustang";
+        //Overriding method
+        void Honk(){
+            cout << "Honky honky" << endl;
+        }
+};
+
+class Fruit {
+    public :
+        string name = "Apple";
+        void Eat(){
+            cout << "Yum yum" << endl;
+        }
+};
+
+//A class can inherit from more than 1 base class
+class PotatoCar : public Car, public Fruit{
+    public :
+        void DriveAndEat(){
+            cout <<" lol" << endl;
+        }
+};
+
+
+
 
 int main() {
     /*
@@ -191,7 +252,30 @@ int main() {
     cout << "After swap: " << "\n";
     cout << firstNum << secondNum << "\n";
 
+    
+
+    //Create a class and assign to it
+    MyClass cuteClass(14, "cute",123);
+
+    cuteClass.InPrint();
+    cuteClass.myString = "cuter";
+    //cuteClass.OutPrint();
+
     */
+
+    Car car;
+    car.Honk();
+    cout << car.brand << " " << car.model << endl;
+
+
+    Vehicle vehicle;
+    vehicle.Honk();
+
+    PotatoCar potatoCar;
+    potatoCar.DriveAndEat();
+    potatoCar.Honk();
+    potatoCar.Eat();
+
 
     return 0;
 }
