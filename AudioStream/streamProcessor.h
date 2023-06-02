@@ -6,9 +6,11 @@ using namespace std;
 class StreamProcessor{
     private:
         double audioScalar;
-        queue<double[]> blockQueue;
+        queue<double> sampleQueue;
+        int sampleCounter = 0;
+        void ProcessSample(double sample);
     public :
         StreamProcessor(double audioScalar);
-        void ProcessSampleBlock(double block[]);
-        void PushBlock(double block[]);
+        void ProcessSamples();
+        void PushBlock(double block[], int size);
 };

@@ -11,23 +11,41 @@ StreamProcessor::StreamProcessor(double audioScalar){
     cout << "Processor Online..." << endl;
 }
 
-void StreamProcessor::PushBlock(double block[]){
-    blockQueue.push(block);
+void StreamProcessor::PushBlock(double block[], int size){
+    cout << "New block recieved" << endl;
+    for(int i = 0; i < size; i++){
+        double sample = block[i];
+        sampleQueue.push(sample);
+    }
 }
 
-void StreamProcessor::ProcessSampleBlock(double block[]){
-    cout << "New batch recieved" << endl;
-    for(int i = 0; i < (sizeof(*block) / sizeof(double)); i++){
-        cout << "New Sample" << endl;
-        double sample = block[i];
+void StreamProcessor::ProcessSamples(){
+    cout << "Starting to process" << endl;
+    while(true){
 
-        double scaledSample = sample * audioScalar;
+        if(sampleQueue.size() == 0){
+            cout << "Nothing to process" << endl;
+            continue;
+        }
 
-        cout    << i << ", "
-                << std::fixed
-                << std::showpos
-                //<< std::setprecision(std::numeric_limits<double>::digits10 - 1)
-                << scaledSample
-                << endl;
+        //Pop the next sample and process it
+        double sample = sampleQueue.front();
+        sampleQueue.pop();
+        ProcessSample(sample);
+
     }
+}
+
+void StreamProcessor::ProcessSample(double sample){
+
+    double scaledSample = sample * audioScalar;
+    sampleCounter++;
+
+    cout    << sampleCounter << ", "
+            << std::fixed
+            << std::showpos
+            //<< std::setprecision(std::numeric_limits<double>::digits10 - 1)
+            << scaledSample
+            << endl;
+
 }

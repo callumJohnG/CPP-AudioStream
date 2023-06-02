@@ -261,7 +261,7 @@ int main() {
     cuteClass.myString = "cuter";
     //cuteClass.OutPrint();
 
-    */
+    
 
     Car car;
     car.Honk();
@@ -275,7 +275,11 @@ int main() {
     potatoCar.DriveAndEat();
     potatoCar.Honk();
     potatoCar.Eat();
+    */
 
+    double block[9];
+    cout << sizeof(block) << endl;
+    cout << sizeof(block) / sizeof(double) << endl;
 
     return 0;
 }
