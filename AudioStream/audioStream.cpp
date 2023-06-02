@@ -10,26 +10,26 @@ using namespace std;
 int main(){
     cout << "Hello world..." << endl;
 
-    StreamProcessor pro;
+    StreamProcessor sampleProcessor(1.5);
 
     StreamGenerator sineGen;
 
     const int frequency = 48000;
 
-    const int batchSize = 480;
+    const int blockSize = 480;
     int sampleCounter = 0;
 
     while(true){
-        double sampleBatch[batchSize];
+        double sampleBlock[blockSize];
 
-        for(int i = 0; i < batchSize + 1; i++)
+        for(int i = 0; i < blockSize + 1; i++)
         {
             double x = (static_cast<double>(i + sampleCounter) / frequency);
             //Wrap around when we surpass frequency limit
             double sample = sineGen.GenerateSample(x);
             //cout << sample << endl;
-            sampleBatch[i] = sample;
-
+            sampleBlock[i] = sample;
+            /*
             cout    << i + sampleCounter << ", "
                     << std::fixed
                     << std::showpos
@@ -41,8 +41,13 @@ int main(){
 
             
             std::this_thread::sleep_for(std::chrono::milliseconds(0));
+
+            */
         }
-        sampleCounter += batchSize;
+        sampleCounter += blockSize;
+
+        //send the batch to the processor
+        sampleProcessor.ProcessSampleBlock(sampleBlock);
     }
 
     
