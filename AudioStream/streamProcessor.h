@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <queue>
+#include <mutex>
 using namespace std;
 
 class StreamProcessor{
@@ -9,6 +10,7 @@ class StreamProcessor{
         queue<double> sampleQueue;
         int sampleCounter = 0;
         void ProcessSample(double sample);
+        mutex queueMutex;
     public :
         StreamProcessor(double audioScalar);
         void ProcessSamples();

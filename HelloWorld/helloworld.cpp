@@ -1,5 +1,9 @@
 #include <iostream>
 #include <string>
+#include <thread>
+#include <time.h>
+#include <chrono>
+#include <queue>
 using namespace std;
 
 //Like python, functions need to be declared before (above) they're called
@@ -85,7 +89,10 @@ class PotatoCar : public Car, public Fruit{
 };
 
 
-
+void ThreadFunction(){
+    
+    cout << "Thread :)" << endl;
+}
 
 int main() {
     /*
@@ -275,14 +282,35 @@ int main() {
     potatoCar.DriveAndEat();
     potatoCar.Honk();
     potatoCar.Eat();
-    */
 
     double block[9];
     cout << sizeof(block) << endl;
     cout << sizeof(block) / sizeof(double) << endl;
 
+    
+
+    thread t1(ThreadFunction);
+
+    t1.join();
+    */
+
+    queue<int> tempQueue;
+    
+    
+    cout << tempQueue.size() << endl;
+
+    tempQueue.push(1);
+    cout << tempQueue.size() << endl;
+
+    
+    tempQueue.pop();
+    cout << tempQueue.size() << endl;
+    
+
     return 0;
 }
+
+
 
 
 //Definition

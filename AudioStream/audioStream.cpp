@@ -5,6 +5,7 @@
 #include <time.h>
 #include <chrono>
 #include <thread>
+#include <mutex>
 using namespace std;
 
 int main(){
@@ -19,15 +20,18 @@ int main(){
     int sampleCounter = 0;
 
     //Start the processor
-    sampleProcessor.ProcessSamples();
-
+    //sampleProcessor.StartProcessing();
+    //thread processorThread(StreamProcessor::ProcessSamples, sampleProcessor);
+    thread processorThread(&StreamProcessor::ProcessSamples, &sampleProcessor);
+    processorThread.detach();
+    //sampleProcessor.ProcessSamples();
+    
     while(true){
         double sampleBlock[blockSize];
 
         for(int i = 0; i < blockSize + 1; i++)
         {
             double x = (static_cast<double>(i + sampleCounter) / frequency);
-            //Wrap around when we surpass frequency limit
             double sample = sineGenerator.GenerateSample(x);
             //cout << sample << endl;
             sampleBlock[i] = sample;
@@ -35,6 +39,8 @@ int main(){
         sampleCounter += blockSize;
 
         //send the block to the processor
+        //thread pushThread(StreamProcessor::PushBlock, sampleProcessor, sampleBlock, blockSize);
+        //pushThread.join();
         sampleProcessor.PushBlock(sampleBlock, blockSize);
     }
 
