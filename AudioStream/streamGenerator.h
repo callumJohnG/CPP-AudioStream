@@ -9,6 +9,6 @@ class StreamGenerator{
     public :
         StreamGenerator();
         double GenerateSample(double time);
-        static const double two_pi;
+        static const double twoPi;
 
 };

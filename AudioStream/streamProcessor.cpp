@@ -19,9 +19,10 @@ void StreamProcessor::PushBlock(double block[], int size){
         double sample = block[i];
 
         lock_guard<mutex> lock(queueMutex);
-
+        
         sampleQueue.push(sample);
     }
+    cout << "block pushed" << endl;
     //cout << sampleQueue.size() << "----------" << endl;
 }
 
@@ -29,9 +30,7 @@ void StreamProcessor::ProcessSamples(){
     cout << "Starting to process" << endl;
 
     //wait 100 milliseconds before processing/outputting
-    cout << "Sleeping" << endl;
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    cout << "AWAKE" << endl;
 
     while(true){
 
@@ -45,10 +44,12 @@ void StreamProcessor::ProcessSamples(){
         //Pop the next sample and process it
         double sample;
 
-        if(true) {//Scope limit the lock
+        //if(true) {//Scope limit the lock
+        {
             lock_guard<mutex> lock(queueMutex);
             sample = sampleQueue.front();
             sampleQueue.pop();
+            //cout << "Size " << sampleQueue.size() << endl;
         }//Lock ends here?
 
         ProcessSample(sample);
@@ -61,11 +62,5 @@ void StreamProcessor::ProcessSample(double sample){
     double scaledSample = sample * audioScalar;
     sampleCounter++;
 
-    cout    << "Sample " << sampleCounter << ", "
-            << std::fixed
-            << std::showpos
-            //<< std::setprecision(std::numeric_limits<double>::digits10 - 1)
-            << scaledSample
-            << endl;
-
+    cout << "Sample " << sampleCounter << ", " << scaledSample << endl;
 }

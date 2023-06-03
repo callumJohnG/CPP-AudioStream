@@ -9,7 +9,7 @@ StreamGenerator::StreamGenerator(){
 }
 
 double StreamGenerator::GenerateSample(double time){
-    return sin(time * two_pi);
+    return sin(time * twoPi);
 }
 
-const double StreamGenerator::two_pi = ::atan(1) * 8.0;
+const double StreamGenerator::twoPi = ::atan(1) * 8.0;
