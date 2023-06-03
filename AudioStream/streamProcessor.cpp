@@ -9,7 +9,6 @@ using namespace std;
 
 StreamProcessor::StreamProcessor(double audioScalar){
     this->audioScalar = audioScalar;
-    cout << "Processor Online..." << endl;
 }
 
 //Need to pass in block size before array is passed in cause it turns into a pointer reference
@@ -22,15 +21,12 @@ void StreamProcessor::PushBlock(double block[], int size){
         
         sampleQueue.push(sample);
     }
-    cout << "block pushed" << endl;
     //cout << sampleQueue.size() << "----------" << endl;
 }
 
 void StreamProcessor::ProcessSamples(){
-    cout << "Starting to process" << endl;
-
     //wait 100 milliseconds before processing/outputting
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(chrono::milliseconds(100));
 
     while(true){
 
@@ -49,7 +45,6 @@ void StreamProcessor::ProcessSamples(){
             lock_guard<mutex> lock(queueMutex);
             sample = sampleQueue.front();
             sampleQueue.pop();
-            //cout << "Size " << sampleQueue.size() << endl;
         }//Lock ends here?
 
         ProcessSample(sample);
@@ -58,9 +53,10 @@ void StreamProcessor::ProcessSamples(){
 }
 
 void StreamProcessor::ProcessSample(double sample){
-
+    //Multiply (scale) the sample by the processors scale factor
     double scaledSample = sample * audioScalar;
     sampleCounter++;
 
+    //Final output of the sample
     cout << "Sample " << sampleCounter << ", " << scaledSample << endl;
 }

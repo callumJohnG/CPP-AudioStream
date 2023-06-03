@@ -4,6 +4,8 @@
 #include <mutex>
 using namespace std;
 
+//Header file for declaring StreamProcessor
+//Used to make compiling multiple classes in different files possible
 class StreamProcessor{
     private:
         double audioScalar;

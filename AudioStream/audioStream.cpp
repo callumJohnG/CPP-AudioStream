@@ -33,16 +33,14 @@ int main(){
     //Begin generation/processing loop
     while(true){
         time_t startTime = time(0);
-        //cout << startTime << " Time" << endl;
 
         double sampleBlock[blockSize];
 
         for(int i = 0; i < blockSize + 1; i++)
         {
-            //Calculate next sample point
+            //Calculate next sample point based on the frequency of samples/second
             double x = (static_cast<double>(i + sampleCounter) / frequency);
             double sample = sineGenerator.GenerateSample(x);
-            //cout << sample << endl;
             sampleBlock[i] = sample;
         }
         sampleCounter += blockSize;
@@ -57,11 +55,7 @@ int main(){
         time_t endTime = time(0);
         time_t elapsedTime = endTime - startTime;
         milliseconds waitTime = blockTime - seconds(elapsedTime);
-        //cout << "End Time : " << endTime << endl;
-        //cout << "elapsed time : " << elapsedTime << endl;
-        //cout << "s:" << startTime << " e:" << endTime << endl; 
         if(waitTime > milliseconds::zero()){
-            //cout << "Sleeping for " << (waitTime) << endl;
             this_thread::sleep_for(waitTime);
         }
     }

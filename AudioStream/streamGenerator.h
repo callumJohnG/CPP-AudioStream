@@ -1,14 +1,9 @@
-#include <iostream>
-#include <string>
-#include <iomanip>
-#include <limits>
-#include <complex>
 using namespace std;
 
+//Header file for declaring StreamGenerator
+//Used to make compiling multiple classes in different files possible
 class StreamGenerator{
     public :
-        StreamGenerator();
         double GenerateSample(double time);
         static const double twoPi;
-
 };
