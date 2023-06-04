@@ -1,9 +1,9 @@
-#include <iostream>
 #include <iomanip>
 #include <limits>
 #include <complex>
 #include"streamGenerator.h"
 
+//Generates a sample using a Sin wave
 double StreamGenerator::GenerateSample(double time){
     return sin(time * twoPi);
 }

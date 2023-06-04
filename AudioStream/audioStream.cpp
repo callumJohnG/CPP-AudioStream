@@ -1,18 +1,15 @@
-#include <iostream>
-#include <string>
 #include "streamGenerator.h"
 #include "streamProcessor.h"
 #include <time.h>
 #include <chrono>
 #include <thread>
-#include <mutex>
 using namespace std;
 using namespace std::chrono;
 
 int main(){
     //Create the processor and the generator
     StreamGenerator sineGenerator;
-    const float audioScalar = 2.1;
+    const double audioScalar = 2.1;
     StreamProcessor sampleProcessor(audioScalar);
 
     const int frequency = 48000;
@@ -20,20 +17,20 @@ int main(){
     int sampleCounter = 0;
 
     //const double blockTime = 0.01;
-    const milliseconds blockTime = milliseconds(100);//one block every 0.01 seconds = 48000 samples/second
+    const milliseconds blockTime = milliseconds(10);//one block every 0.01 seconds = 48000 samples/second
     
 
 
     //Start the processor
-    //sampleProcessor.StartProcessing();
     //thread processorThread(StreamProcessor::ProcessSamples, sampleProcessor);
     thread processorThread(&StreamProcessor::ProcessSamples, &sampleProcessor);
-    processorThread.detach();
+    processorThread.detach();//Detach since will run indefinately
     
     //Begin generation/processing loop
     while(true){
         time_t startTime = time(0);
 
+        //Create the next block of samples
         double sampleBlock[blockSize];
 
         for(int i = 0; i < blockSize + 1; i++)
@@ -54,7 +51,9 @@ int main(){
         //wait until 1/100 of a second has passed (attempt to cap generation speed at 48000/second)
         time_t endTime = time(0);
         time_t elapsedTime = endTime - startTime;
+        //time_t waitTime = blockTime - elapsedTime;
         milliseconds waitTime = blockTime - seconds(elapsedTime);
+        //if(waitTime > 0){
         if(waitTime > milliseconds::zero()){
             this_thread::sleep_for(waitTime);
         }

@@ -1,9 +1,7 @@
 #include"streamProcessor.h"
-#include <time.h>
 #include <chrono>
 #include <thread>
 #include <iostream>
-#include <string>
 #include <mutex>
 using namespace std;
 
@@ -11,31 +9,29 @@ StreamProcessor::StreamProcessor(double audioScalar){
     this->audioScalar = audioScalar;
 }
 
-//Need to pass in block size before array is passed in cause it turns into a pointer reference
+//Need to pass in block size before array is passed in cause it decays into a pointer
 void StreamProcessor::PushBlock(double block[], int size){
-    //cout << "New block recieved" << endl;
     for(int i = 0; i < size; i++){
         double sample = block[i];
 
-        lock_guard<mutex> lock(queueMutex);
+        lock_guard<mutex> lock(queueMutex);//Lock starts here
         
         sampleQueue.push(sample);
-    }
-    //cout << sampleQueue.size() << "----------" << endl;
+    }//Lock ends here
 }
 
 void StreamProcessor::ProcessSamples(){
-    //wait 100 milliseconds before processing/outputting
-    std::this_thread::sleep_for(chrono::milliseconds(100));
+
+    //wait 100 milliseconds before processing/outputting to create a delay
+    this_thread::sleep_for(chrono::milliseconds(100));
 
     while(true){
-
+        
+        //Wait if there are no samples to process in the queue
         if(sampleQueue.size() == 0){
-            //cout << sampleQueue.size() << endl;
             continue;
         }
 
-        //cout << "Popping block and processing it" << endl;
 
         //Pop the next sample and process it
         double sample;
