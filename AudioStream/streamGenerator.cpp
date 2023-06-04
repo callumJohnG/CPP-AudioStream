@@ -1,10 +1,11 @@
 #include <iomanip>
 #include <limits>
 #include <complex>
-#include"streamGenerator.h"
+#include "streamGenerator.h"
 
-//Generates a sample using a Sin wave
-double StreamGenerator::GenerateSample(double time){
+// Generates a sample using a Sin wave
+double StreamGenerator::GenerateSample(double time)
+{
     return sin(time * twoPi);
 }
 
